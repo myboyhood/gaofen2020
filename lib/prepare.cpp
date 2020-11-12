@@ -41,6 +41,30 @@ void setBeforeOffbPva()
 
 }
 
+void setGetYawPva()
+{
+    pvaTargetPointMsg.positions.clear();
+    pvaTargetPointMsg.velocities.clear();
+    pvaTargetPointMsg.accelerations.clear();
+    pvaTargetPointMsg.effort.clear();
+
+    pvaTargetPointMsg.positions.push_back(dronePoseLp.pose.position.x);
+    pvaTargetPointMsg.positions.push_back(dronePoseLp.pose.position.y);
+    pvaTargetPointMsg.positions.push_back(dronePoseLp.pose.position.z-2);// inorder to make motor keep static
+    pvaTargetPointMsg.positions.push_back(0);
+
+    pvaTargetPointMsg.velocities.push_back(0);
+    pvaTargetPointMsg.velocities.push_back(0);
+    pvaTargetPointMsg.velocities.push_back(0);
+
+    pvaTargetPointMsg.accelerations.push_back(0);
+    pvaTargetPointMsg.accelerations.push_back(0);
+    pvaTargetPointMsg.accelerations.push_back(0);
+
+    pvaTargetPointMsg.effort.push_back(0);
+
+}
+
 
 
 
@@ -59,6 +83,8 @@ bool get_yaw_fun(){
     //droneEuler = quaternion2euler_eigen(dronePoseT265.pose.pose.orientation.x,dronePoseT265.pose.pose.orientation.y,dronePoseT265.pose.pose.orientation.z,dronePoseT265.pose.pose.orientation.w);
   //  initYaw = droneEuler.z();
 
+    setGetYawPva();//wzy
+    pubPvaTargetPoint.publish(pvaTargetPointMsg);//wzy
     ///get average-init-number through 100 times of calculation
     getYawFuncCount--;
     if(getYawFuncCount<0)

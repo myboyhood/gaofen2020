@@ -106,6 +106,8 @@ extern Eigen::Vector2d hover2homeDrift;
 extern Eigen::Vector3d drift;
 extern int hoverFunCount;
 //extern double takeOffHeight;
+extern void setBeforeOffbPva();
+extern void setGetYawPva();
 extern bool get_yaw_fun();
 extern bool take_off_func();
 extern bool hover_and_adjust_func();
@@ -113,6 +115,7 @@ extern bool hover_and_adjust_func();
 /**
  * ros_callback.cpp
  */
+extern bool gotVisionData;
 extern ros::Subscriber subStateVision;
 extern ros::Subscriber subStateT265;
 extern ros::Subscriber subStateHeight;
@@ -127,7 +130,7 @@ extern ros::Publisher pubDroneCurrentPose;
 extern void ros_callback_func();
 extern bool waitVisionCb(gaofen2020::WaitVisionPoseSrv::Request  &req,
                          gaofen2020::WaitVisionPoseSrv::Response &res);
-
+extern bool requestVisionFunc(int num);
 /**
  * callback_function
  */

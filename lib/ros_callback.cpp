@@ -21,6 +21,8 @@ ros::Publisher pubDroneCurrentPose;
 ros::ServiceClient requestVisionClient;
 ros::ServiceServer waitVisionServer;
 
+bool gotVisionData = false;
+
 void ros_callback_func(){
 
     ros::NodeHandle nh;
@@ -119,6 +121,24 @@ void statePoseCb(const geometry_msgs::PoseStamped::ConstPtr& msg)
     dronePoseCurrent.pose.position.y=dronePoseLp.pose.position.y;*/
 }
 
+/*
+ * gaofen2020Node request visionData to visionNode then
+ * wait visionNode to collect a good pose then
+ * if visionNode get a good pose then send a request to gaofen2020Node to updateDrift
+ * else visionNode do not send a request and drift will not update
+ */
+bool requestVisionFunc(int num){
+    gaofen2020::RequestVisionPoseSrv srv;
+    srv.request.requestVisionData = true;
+    srv.request.num = num;
+    if(requestVisionClient.call(srv)){
+        ROS_WARN("The response from visionNode : %d", srv.response.requestVisionResult);
+        ROS_WARN("Send a request to visionModule, And success !!! ");
+    } else{
+        ROS_ERROR("Fail to request visionModule ...");
+    }
+}
+
 bool waitVisionCb(gaofen2020::WaitVisionPoseSrv::Request  &req,
                   gaofen2020::WaitVisionPoseSrv::Response &res)
 {
@@ -126,5 +146,9 @@ bool waitVisionCb(gaofen2020::WaitVisionPoseSrv::Request  &req,
     res.currDriftX = frontPoints[id][0]+frontLoopDistance - visionPose.pose.position.x-dronePoseCurrent.pose.position.x;
     res.currDriftY = frontPoints[id][1] - visionPose.pose.position.y-dronePoseCurrent.pose.position.y;
     res.currDriftZ = board_height[id]- visionPose.pose.position.z-planeCurrHeight;
+    drift.x() = res.currDriftX;
+    drift.y() = res.currDriftY;
+    drift.z() = res.currDriftZ;
 
+    gotVisionData = true;
 }

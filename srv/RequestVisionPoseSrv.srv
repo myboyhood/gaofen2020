@@ -1,3 +1,4 @@
 bool requestVisionData
+int8 num
 ---
 bool requestVisionResult

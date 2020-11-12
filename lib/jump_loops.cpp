@@ -10,6 +10,7 @@ double frontLoopDistance = 1.1;
 double behindLoopDistance = 0.5;
 double height = 1.0;
 double velocityX = 0;
+int requestLoopNum = 1;
 
 trajectory_msgs::JointTrajectoryPoint pvaTargetPointMsg;
 
@@ -62,31 +63,31 @@ bool go_to_loop(int numberLoop)
 {
 
     if(numberLoop==0)
-    {
+    {   requestLoopNum = 1;
         ROS_ERROR_ONCE("----start loop %d",numberLoop);
     }
     if(numberLoop==1)
-    {
+    {   requestLoopNum = 1;
         ROS_ERROR_ONCE("----start loop %d",numberLoop);
     }
     if(numberLoop==2)
-    {
+    {   requestLoopNum = 2;
         ROS_ERROR_ONCE("----start loop %d",numberLoop);
     }
     if(numberLoop==3)
-    {
+    {   requestLoopNum = 3;
         ROS_ERROR_ONCE("----start loop %d",numberLoop);
     }
     if(numberLoop==4)
-    {
+    {   requestLoopNum = 4;
         ROS_ERROR_ONCE("----start loop %d",numberLoop);
     }
     if(numberLoop==5)
-    {
+    {   requestLoopNum = 5;
         ROS_ERROR_ONCE("----start loop %d",numberLoop);
     }
     if(numberLoop==6)
-    {
+    {   requestLoopNum = 6;
         ROS_ERROR_ONCE("----start loop %d",numberLoop);
     }
 
@@ -98,8 +99,10 @@ bool go_to_loop(int numberLoop)
             ROS_INFO("go to loop %d front center",numberLoop);
             return false;
         }
-        update_drift(numberLoop);
-        setBoardPva(numberLoop);
+//        update_drift(numberLoop);//wzy
+//        setBoardPva(numberLoop);//wzy
+        requestVisionFunc(requestLoopNum);
+        setBoardPva(requestLoopNum);
         pubPvaTargetPoint.publish(pvaTargetPointMsg);
         if(isArrivedBoard(numberLoop))
         {
@@ -112,8 +115,8 @@ bool go_to_loop(int numberLoop)
 
     if(loopStep==1) //飞到圆心正前方
     {
-        update_drift(numberLoop);
-
+//        update_drift(numberLoop);//wzy
+        requestVisionFunc(requestLoopNum);
         setFrontPva(numberLoop);
         pubPvaTargetPoint.publish(pvaTargetPointMsg);
         if(isArrivedFront(numberLoop))
@@ -126,7 +129,8 @@ bool go_to_loop(int numberLoop)
 
     if(loopStep==2)  //飞到圆心后面
     {
-        update_drift(numberLoop);
+//        update_drift(numberLoop);//wzy
+        requestVisionFunc(requestLoopNum+1);
         ///TODO ONLY IN SIMULATION
         setCenterPva(numberLoop);
         pubPvaTargetPoint.publish(pvaTargetPointMsg);
