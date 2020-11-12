@@ -1,0 +1,8 @@
+int8 ID
+float64 visionPoseDataX
+float64 visionPoseDataY
+float64 visionPoseDataZ
+---
+float64 currDriftX
+float64 currDriftY
+float64 currDriftZ

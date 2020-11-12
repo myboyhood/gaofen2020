@@ -1,0 +1,8 @@
+prefix=/home/wzy/catkin_ws/src/gaofen2020/cmake-build-debug/devel
+
+Name: gaofen2020
+Description: Description of gaofen2020
+Version: 0.0.0
+Cflags: -I/home/wzy/catkin_ws/src/gaofen2020/cmake-build-debug/devel/include
+Libs: -L${prefix}/lib 
+Requires: message_runtime
